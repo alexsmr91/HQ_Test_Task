@@ -1,0 +1,1310 @@
+{
+	"info": {
+		"_postman_id": "b28895b2-2d11-47ac-9b24-343efcdfe125",
+		"name": "alex_smr_91_HQ_Test_task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22845477"
+	},
+	"item": [
+		{
+			"name": "Add user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 201\", () => {\r",
+							"  pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"postman.setEnvironmentVariable('user_id', responseJSON.id);\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response contains 'username' property\", () => {\r",
+							"  pm.expect(pm.environment.get('default_username')).to.eql(responseJSON.username);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response contains 'role' property\", () => {\r",
+							"  pm.expect(pm.environment.get('student_role')).to.eql(responseJSON.role);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"{{default_username}}\",\r\n    \"password\" : \"{{default_password}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/user/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get product list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Success answer\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is empty list\", function() {\r",
+							"    pm.expect(responseJSON).to.eql([]);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{default_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{default_username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/product",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 201\", () => {\r",
+							"  pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"postman.setEnvironmentVariable('product_id', responseJSON.id);\r",
+							"postman.setEnvironmentVariable('admin_id', responseJSON.author);\r",
+							"\r",
+							"pm.test(\"Response contains 'id' property\", () => {\r",
+							"  pm.expect(pm.environment.get('product_id')).to.eql(responseJSON.id);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'price' property\", () => {\r",
+							"  pm.expect(pm.environment.get('product_price')).to.eql(responseJSON.price);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'author' property\", () => {\r",
+							"  pm.expect(pm.environment.get('admin_id')).to.eql(responseJSON.author);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'name' property\", () => {\r",
+							"  pm.expect(pm.environment.get('product_name')).to.eql(responseJSON.name);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'start_datetime' property\", () => {\r",
+							"  pm.expect(pm.environment.get('product_datetime')).to.eql(responseJSON.start_datetime);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{default_admin_pass}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{default_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{product_name}}\",\r\n    \"price\": {{product_price}},\r\n    \"start_datetime\": \"{{product_datetime}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/product/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"product",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get product author",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{default_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{default_username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/user/{{admin_id}}}/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"{{admin_id}}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get available product list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Success answer\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is not empty list\", function() {\r",
+							"    pm.expect(responseJSON).not.eql([]);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{default_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{default_username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/available_product/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"available_product",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buy product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{default_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{default_username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://{{site_addr}}/api/buy_product/{{product_id}}/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"buy_product",
+						"{{product_id}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get available product list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Success answer\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is not empty list\", function() {\r",
+							"    pm.expect(responseJSON).eql([]);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{default_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{default_username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/available_product/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"available_product",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"postman.setEnvironmentVariable('product_id', responseJSON.id);\r",
+							"postman.setEnvironmentVariable('admin_id', responseJSON.author);\r",
+							"\r",
+							"pm.test(\"Response contains 'id' property\", () => {\r",
+							"  pm.expect(pm.environment.get('product_id')).to.eql(responseJSON.id);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'price' property\", () => {\r",
+							"  pm.expect(pm.environment.get('product_price')).to.eql(responseJSON.price);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'author' property\", () => {\r",
+							"  pm.expect(pm.environment.get('admin_id')).to.eql(responseJSON.author);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'name' property\", () => {\r",
+							"  pm.expect(pm.environment.get('product_name')).to.eql(responseJSON.name);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'start_datetime' property\", () => {\r",
+							"  pm.expect(pm.environment.get('product_datetime')).to.eql(responseJSON.start_datetime);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{default_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{default_username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/product/{{product_id}}/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"product",
+						"{{product_id}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get lessons list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Success answer\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is not empty list\", function() {\r",
+							"    pm.expect(responseJSON).eql([]);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{default_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{default_username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/product/{{product_id}}/lesson/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"product",
+						"{{product_id}}",
+						"lesson",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add lesson",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 201\", () => {\r",
+							"  pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"postman.setEnvironmentVariable('lesson_id', responseJSON.id);\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response contains 'id' property\", () => {\r",
+							"  pm.expect(pm.environment.get('lesson_id')).to.eql(responseJSON.id);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'video_link' property\", () => {\r",
+							"  pm.expect(pm.environment.get('lesson_url')).to.eql(responseJSON.video_link);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'name' property\", () => {\r",
+							"  pm.expect(pm.environment.get('lesson_name')).to.eql(responseJSON.name);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{default_admin_pass}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{default_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{lesson_name}}\",\r\n    \"video_link\": \"{{lesson_url}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/product/{{product_id}}/lesson/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"product",
+						"{{product_id}}",
+						"lesson",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get lessons list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Success answer\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is not empty list\", function() {\r",
+							"    pm.expect(responseJSON).not.eql([]);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{default_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{default_username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/product/{{product_id}}/lesson/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"product",
+						"{{product_id}}",
+						"lesson",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get lesson",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"postman.setEnvironmentVariable('lesson_id', responseJSON.id);\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response contains 'id' property\", () => {\r",
+							"  pm.expect(pm.environment.get('lesson_id')).to.eql(responseJSON.id);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'video_link' property\", () => {\r",
+							"  pm.expect(pm.environment.get('lesson_url')).to.eql(responseJSON.video_link);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'name' property\", () => {\r",
+							"  pm.expect(pm.environment.get('lesson_name')).to.eql(responseJSON.name);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{default_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{default_username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/product/{{product_id}}/lesson/{{lesson_id}}/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"product",
+						"{{product_id}}",
+						"lesson",
+						"{{lesson_id}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 201\", () => {\r",
+							"  pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"postman.setEnvironmentVariable('user_id', responseJSON.id);\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response contains 'username' property\", () => {\r",
+							"  pm.expect(pm.environment.get('default_username2')).to.eql(responseJSON.username);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response contains 'role' property\", () => {\r",
+							"  pm.expect(pm.environment.get('student_role')).to.eql(responseJSON.role);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"{{default_username2}}\",\r\n    \"password\" : \"{{default_password}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/user/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 403\", () => {\r",
+							"  pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'detail' property\", () => {\r",
+							"  pm.expect(pm.environment.get('permissons_denied')).to.eql(responseJSON.detail);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "{{default_username2}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{default_password}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/product/{{product_id}}/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"product",
+						"{{product_id}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get lessons list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 403\", () => {\r",
+							"  pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'detail' property\", () => {\r",
+							"  pm.expect(pm.environment.get('permissons_denied')).to.eql(responseJSON.detail);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "{{default_username2}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{default_password}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/product/{{product_id}}/lesson/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"product",
+						"{{product_id}}",
+						"lesson",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get lesson",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 403\", () => {\r",
+							"  pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'detail' property\", () => {\r",
+							"  pm.expect(pm.environment.get('permissons_denied')).to.eql(responseJSON.detail);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "{{default_username2}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{default_password}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/product/{{product_id}}/lesson/{{lesson_id}}/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"product",
+						"{{product_id}}",
+						"lesson",
+						"{{lesson_id}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get users list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 403\", () => {\r",
+							"  pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'detail' property\", () => {\r",
+							"  pm.expect(pm.environment.get('permissons_denied')).to.eql(responseJSON.detail);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "{{default_username2}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{default_password}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/user/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add lesson",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 403\", () => {\r",
+							"  pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'detail' property\", () => {\r",
+							"  pm.expect(pm.environment.get('permissons_denied')).to.eql(responseJSON.detail);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "{{default_username2}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{default_admin_pass}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{lesson_name}}\",\r\n    \"video_link\": \"{{lesson_url}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/product/{{product_id}}/lesson/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"product",
+						"{{product_id}}",
+						"lesson",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 403\", () => {\r",
+							"  pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains 'detail' property\", () => {\r",
+							"  pm.expect(pm.environment.get('permissons_denied')).to.eql(responseJSON.detail);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "{{default_username2}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{default_admin_pass}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{product_name}}\",\r\n    \"price\": {{product_price}},\r\n    \"start_datetime\": \"{{product_datetime}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{site_addr}}/api/product/",
+					"protocol": "http",
+					"host": [
+						"{{site_addr}}"
+					],
+					"path": [
+						"api",
+						"product",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

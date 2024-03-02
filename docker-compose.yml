@@ -1,0 +1,17 @@
+version: '3.4'
+services:
+  app:
+    build: .
+    container_name: app
+    command: ./docker-entrypoint.sh
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 8000:8000
+    healthcheck:
+      test: curl --fail http://localhost:8000 || exit 1
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
