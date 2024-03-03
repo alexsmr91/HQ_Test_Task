@@ -67,6 +67,8 @@ class AvailableProductViewSet(MixedPermission, ModelViewSet):
 
 
 class BuyProductAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, product_id):
         try:
             product = Product.objects.get(id=product_id)
